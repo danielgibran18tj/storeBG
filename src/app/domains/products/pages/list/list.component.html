@@ -1,0 +1,64 @@
+
+<div class="flex space-x-4 mt-5">
+
+    <div class="categories" >
+        <ul class="rounded-lg border" style="background-color:rgb(190, 150, 101)" >
+            <li>
+                <a  
+                    class="block py-3 px-4 text-xl font-bold text-gray-900 hover:bg-gray-100 hover:text-gray-700" 
+                    routerLink="/list/"
+                    (click)="categorySeleccionada = 0"
+                    [class.bg-gray-200]="categorySeleccionada == 0"
+                    >
+                        All
+                </a>
+            </li>
+            <li *ngFor="let category of categories()">
+                <a class="block py-3 px-4 text-lg font-semibold text-gray-600 hover:bg-gray-200 hover:text-gray-700" 
+                    routerLink="/list/" [queryParams]="{category_id: category.id}" 
+                    (click)="categorySeleccionada = category.id"
+                    [class.bg-gray-200]="categorySeleccionada == category.id"> 
+                        {{category.name}} 
+                </a>
+            </li>
+            <li>
+                <a  
+                    class="bg-gray-200 block py-3 px-4 text-xl font-bold text-gray-900 hover:bg-gray-100 hover:text-gray-700" 
+                    routerLink="/list/" [queryParams]="{category_id: 'seleccionados'}" 
+                    (click)="categorySeleccionada = 0"
+                    >
+                    Show Only Favorites
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+    <div >
+        <div class="grid container gap-8 w-full">
+            <app-product *ngFor="let product of obtenerProductosPaginados(currentPage)" 
+            [title]="product.title" 
+            [price]="product.price"
+            [img]="product.images[0]" 
+            [product]="product" 
+            (addToCart)="addAsSelected($event)" />
+        </div>
+
+        <div [style.visibility]="(products().length <= pageSize) ? 'hidden' : 'visible'" >
+            <mat-paginator style="
+                    display: ruby-text;
+                    color: #9d2155; 
+                    background-color:bisque ; 
+                    font-weight: bold; 
+                    margin: 2rem;
+                    font-size: 18px;" 
+                [length]="products().length"
+                [pageIndex]="currentPage" 
+                [pageSize]="pageSize"
+                (page)="currentPage = $event.pageIndex">
+            </mat-paginator>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<nav>
+    <!-- 'py-4' pading en eje y  -->
+    <div class="w-full flex flex-wrap items-center justify-between mx-auto py-4">
+        <div class="flex items-center space-x-8">
+            <a href="https://flowbite.com/" class="flex items-center ">
+                <img src="https://w7.pngwing.com/pngs/969/804/png-transparent-blue-and-red-autobots-logo-transformers-the-game-optimus-prime-bumblebee-autobot-transformer-emblem-logo-fictional-character.png" class="h-10 mr-3" alt="Flowbite Logo" />
+                <span class="self-center text-xl font-semibold whitespace-nowrap">Store Hinos</span>
+            </a>
+            <ul class="flex space-x-6">
+                <li>
+                    <a
+                        routerLink="/list"
+                        routerLinkActive="underline"
+                        [routerLinkActiveOptions]="{exact: true}"
+                        class="block underline hover:underline"
+                        aria-current="page">
+                            Home
+                    </a>
+                </li>
+                <!-- <li>
+                    <a
+                        routerLinkActive="underline"
+                        class="block hover:underline">
+                            Ingresar nuevo Producto
+                    </a>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
