@@ -1,0 +1,38 @@
+<div class="modal-container fixed top-1/2 left-1/2
+    transform -translate-x-1/2 -translate-y-1/2
+    w-96 h-auto bg-light shadow-lg rounded"
+    style="border-radius: 5px;"
+    >
+    <div
+    >
+        <div style="border-radius: 12px; "
+            class="modal-header bg-secondary text-white p-3">
+            <h2 class="modal-title">Datos del nuevo Usuario</h2>
+        </div>
+        <div class="modal-body p-3">
+            <form>
+                <div class="form-group mb-3">
+                    <label for="username">UserName:</label>
+                    <input type="text" id="username" name="username" class="form-control" [(ngModel)]="dataNew.username" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" class="form-control" [(ngModel)]="dataNew.email" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" class="form-control" [(ngModel)]="dataNew.password" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="role">Role:</label>
+                    <input type="text" id="role" name="role" class="form-control" [(ngModel)]="dataNew.roleId">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer p-3">
+            <button class="btn btn-danger me-2" (click)="cancelar()">Cancelar</button>
+            <button class="btn btn-success" [mat-dialog-close]="dataNew" cdkFocusInitial>Confirmar</button>
+        </div>
+
+    </div>
+</div>

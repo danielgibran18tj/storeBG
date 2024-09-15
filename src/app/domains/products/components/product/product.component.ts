@@ -1,12 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../../shared/models/product.model';
 import { CommonModule } from '@angular/common';
+import { ReversePipe } from '@shared/pipes/reverse.pipe';
+import { TimeAgoPipe } from '@shared/pipes/time-ago.pipe';
 import { RouterLinkWithHref } from '@angular/router';
+import { NgbCarouselConfig, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, RouterLinkWithHref],
+  imports: [CommonModule, ReversePipe, TimeAgoPipe, RouterLinkWithHref, NgbCarouselModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css'
 })
@@ -19,36 +22,24 @@ export class ProductComponent {     // estamos en el hijo
 
   @Output() addToCart = new EventEmitter();   // comunica desde el hijo hacia el padre
 
-  selectedProducts: Set<number> = new Set();
-
-  addToCartHandler() {
-    if (this.selectedProducts.has(this.product.id)) {
-      this.selectedProducts.delete(this.product.id);
-    } else {
-      this.selectedProducts.add(this.product.id);
-    }
-    this.updateLocalStorage();
+  addToCartHandler(){
+    // enviando producto seleccionado
     this.addToCart.emit(this.product);
   }
   
-	constructor() {
-    this.loadSelectedProducts();
+  images = [700, 533, 807, 124].map((n) => `https://picsum.photos/id/${n}/900/500`);
+
+	constructor(config: NgbCarouselConfig) {
+		// customize default values of carousels used by this component tree
+		config.interval = 0;    // en milisegundos
+		config.wrap = true;   // repite ciclo
+		config.keyboard = false;  // manejo con teclado
+		config.pauseOnHover = false;  //Pausa al pasar el ratón
 	}
 
-  isSelected(productId: number): boolean {
-    return this.selectedProducts.has(productId);
-  }
 
-   // Cargar productos seleccionados desde el localStorage
-   private loadSelectedProducts() {
-    const storedProducts = localStorage.getItem('selectedProducts');
-    if (storedProducts) {
-      this.selectedProducts = new Set(JSON.parse(storedProducts));
-    }
-  }
-
-  // Actualizar el localStorage con productos seleccionados
-  private updateLocalStorage() {
-    localStorage.setItem('selectedProducts', JSON.stringify(Array.from(this.selectedProducts)));
+  handleInvisibleButtonClick(){
+    console.log('recibiendo el click');
+    
   }
 }

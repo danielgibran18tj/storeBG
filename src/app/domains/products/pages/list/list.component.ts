@@ -22,15 +22,18 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 })
 export class ListComponent {
   img = 'https://picsum.photos/640/640?r=' + Math.random()
+  rolActual = localStorage.getItem('authRol');
+  tokenActual = localStorage.getItem('authToken') ?? "";
   products = signal<Product[]>([]);
   categories = signal<Category[]>([]);
   categorySeleccionada: number = 0;
   private cartService = inject(CartService);
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
-  pageSize = 10;
-  currentPage = 0;
+  pageSize = 10; // Número de elementos por página
+  currentPage = 0; // Página actual
 
+  // withComponentInputBinding() usado en app.config, gracias a este recibe el parametro
   @Input() category_id?: string;
 
   constructor(   
@@ -41,25 +44,23 @@ export class ListComponent {
   }
 
 
-  ngOnInit(): void {    
-    this.getProducts();
+  ngOnInit(): void {
+    console.log("entrando a ngOnInit");
+    console.log(this.rolActual);
     this.getCategories();
   }
   
   
   ngOnChanges(changes: SimpleChanges): void {
     const category_id = changes['category_id']
-    if (category_id && category_id.currentValue === 'seleccionados') {
-      console.log('getProductsSelect');
-      this.getProductsSelect()
-    } else if (category_id) {
-      console.log('getProducts');
+    if (category_id) {
+      console.log("entrando a ngOnChanges");
       this.getProducts()
     }
     this.currentPage = 0
   }
 
-  
+
   obtenerProductosPaginados(page: number): any[] {
     const startIndex = page * this.pageSize;
     
@@ -67,35 +68,18 @@ export class ListComponent {
     const paginatedProducts = this.products().slice(startIndex, startIndex + this.pageSize);
     return paginatedProducts;
   }
-  
-  
-  getProductsSelect() {
-    this.productService.getProductSelect().subscribe({
-      next: (response: HttpResponse<Product[]>) => {
-        if(response.status === 200 ){
-          this.products.set(response.body || []);
-          console.log(response.body);
-        }
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log('algo no salio bien', error);
-        this.router.navigate(['/errorss']);
-      }
-    })
-  }
 
 
-  addAsSelected(product: Product) {
+  addToCart(product: Product) {
     console.log('recibiendo producto')
-    // this.cart.update(prevState => [...prevState, product]);
-    this.cartService.addToSelect(product)
+    this.cartService.addToCart(product)
   }
 
 
   getProducts() {
     console.log('category_id', this.category_id);
 
-    this.productService.getProducts(this.category_id).subscribe({
+    this.productService.getProducts(this.category_id, this.tokenActual).subscribe({
       next: (response: HttpResponse<Product[]>) => {
         if(response.status === 200 ){
           this.products.set(response.body || []);
@@ -104,23 +88,23 @@ export class ListComponent {
       },
       error: (error: HttpErrorResponse) => {
         console.log('algo no salio bien', error);
-        this.router.navigate(['/errorss']);
-        alert("Hubo un error con la lista de productos")
-      
+        alert("Posiblemente alla caducado su sesion")
+        if (error.status === 401) {
+          this.router.navigate(['/login'])
+        }  
       }
     })
   }
 
 
   getCategories() {
-    this.categoryService.getAll().subscribe({
+    this.categoryService.getAll(this.tokenActual).subscribe({
       next: (data) => {
         this.categories.set(data);
         console.log(data);
       },
       error: () => {
         console.log('algo no salio bien');
-        this.router.navigate(['/errorss']);
       }
     })
   }

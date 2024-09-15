@@ -12,8 +12,12 @@ export class CategoryService {
   constructor() { }
 
   
-  getAll(){
+  getAll(token?: string){
 
-    return this.http.get<Category[]>('http://localhost:5024/api/categories');
+    const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+    // return this.http.get<Category[]>('http://192.168.68.55:8080/api/v1/categories');
+    return this.http.get<Category[]>('http://localhost:5024/api/categories', {headers});
+    // return this.http.get<Category[]>(`https://api.escuelajs.co/api/v1/categories`);
   }
 }

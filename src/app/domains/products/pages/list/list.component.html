@@ -21,16 +21,6 @@
                         {{category.name}} 
                 </a>
             </li>
-            <li>
-                <a  
-                    class="bg-gray-200 block py-3 px-4 text-xl font-bold text-gray-900 hover:bg-gray-100 hover:text-gray-700" 
-                    routerLink="/list/" [queryParams]="{category_id: 'seleccionados'}" 
-                    (click)="categorySeleccionada = 0"
-                    >
-                    Show Only Favorites
-                </a>
-            </li>
-            
         </ul>
     </div>
 
@@ -42,7 +32,7 @@
             [price]="product.price"
             [img]="product.images[0]" 
             [product]="product" 
-            (addToCart)="addAsSelected($event)" />
+            (addToCart)="addToCart($event)" />
         </div>
 
         <div [style.visibility]="(products().length <= pageSize) ? 'hidden' : 'visible'" >

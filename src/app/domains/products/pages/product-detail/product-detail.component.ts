@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
 import { Product } from '@shared/models/product.model';
 import { CartService } from '@shared/service/cart.service';
 import { ProductService } from '@shared/service/product.service';
@@ -14,73 +13,40 @@ import { ProductService } from '@shared/service/product.service';
 })
 export default class ProductDetailComponent {
 
+  // withComponentInputBinding() =>  importante señalar que este input viene desde listComponent
+  // , pero gracias a esta funcionalidad escrita en 'app.cofig'
   @Input() id?: string;
-  selectedProducts: Set<number> = new Set();
+
   product = signal<Product | null>(null)
   cover = signal('');
   private productService = inject(ProductService);
+  private cartService = inject(CartService);
 
   ngOnInit(): void {
     console.log("entramos al details ");
-    if (this.id) {
+    if(this.id){
       console.log(this.id);
       this.productService.getOne(this.id).subscribe({
         next: (product) => {
           console.log(product);
           this.product.set(product);
-          this.cover.set(product.images);
-        },
-        error: () => {
-          console.log('algo no salio bien');
-          this.router.navigate(['/errorss']);
-          alert("Hubo un error con la lista de productos")
-
+          if(product.listImages.length > 0) {
+            this.cover.set(product.listImages[0]);
+          }
         }
       })
     }
   }
 
-  constructor(
-    private router: Router,
-  ) {
-    this.loadSelectedProducts();
-  }
-
-  private loadSelectedProducts() {
-    const storedProducts = localStorage.getItem('selectedProducts');
-    if (storedProducts) {
-      this.selectedProducts = new Set(JSON.parse(storedProducts));
-    }
-  }
-
-  changeCover(image: string) {
+  changeCover(image: string){
     this.cover.set(image)
   }
 
-  isSelected(): boolean {
+  addToCart(){
     const producto = this.product();
-    if (producto) {
-      return this.selectedProducts.has(producto.id);
+    if(producto){
+      this.cartService.addToCart(producto);
     }
-    return false;
-  }
-
-  addToSelect() {
-    const producto = this.product();
-    if (producto) {
-      if (this.selectedProducts.has(producto.id)) {
-        this.selectedProducts.delete(producto.id);
-      } else {
-        this.selectedProducts.add(producto.id);
-      }
-      this.updateLocalStorage();
-    }
-  }
-
-
-  // Actualizar el localStorage con productos seleccionados
-  private updateLocalStorage() {
-    localStorage.setItem('selectedProducts', JSON.stringify(Array.from(this.selectedProducts)));
   }
 
 }

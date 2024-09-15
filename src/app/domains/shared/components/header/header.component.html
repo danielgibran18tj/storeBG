@@ -17,15 +17,90 @@
                             Home
                     </a>
                 </li>
-                <!-- <li>
+                <li>
+                    <a
+                        routerLink="/about"
+                        routerLinkActive="underline"
+                        class="block hover:underline">
+                            About
+                    </a>
+                </li>
+                <li>
+                    <a
+                        routerLink="/servicessss"
+                        routerLinkActive="underline"
+                        class="block hover:underline">
+                            Errors
+                    </a>
+                </li>
+                <li *ngIf="rolActual == 'ADMINISTRADOR'">
                     <a
                         routerLinkActive="underline"
                         class="block hover:underline">
                             Ingresar nuevo Producto
                     </a>
-                </li> -->
+                </li>
             </ul>
+        </div>
+        <div class="flex items-center">
+            <button class="relative" (click)="cerrarSession()">
+                Cerrar sesion
+            </button>
+        </div>
+        <div class="flex items-center">
+            <button class="p-2 border rounded relative" (click)="toogleSideMenu()">
+                <div class="absolute -top-2 -left-2 rounded h-5 w-5 bg-black text-white text-xs">{{cart().length}}</div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                </svg>
+            </button>
         </div>
     </div>
 </nav>
 
+
+<!-- '[class.translate-x-full]' activa caracteristica o estilo de vizualizacion -->
+<div class="fixed border-l-4 top-0 right-0 bg-red z-40 w-80 h-screen p-4 overflow-y-auto transition-transform bg-white "
+    [class.translate-x-full]="hideSideMenu()">
+
+    <div class="flex justify-between items-center">
+        <p class="text-2xl font-bold text-gray-900">My Cart</p>
+        <hr class="border-t border-blue-500">
+        <button (click)="toogleSideMenu()" class="close-button flex items-center justify-center text-white bg-red-500 hover:bg-red-700 rounded-full w-8 h-8 focus:outline-none">
+            X
+        </button>
+    </div>
+    <div class="pt-4 flex flex-col">
+        <div 
+        class="flex justify-between items-center space-y-2 rounded-lg border my-2 py-2" 
+        *ngFor="let product of cart() ; let i = index">
+            <div class="flex space-x-2 items-center">
+                <img class="w-16 h-16 rounded-lg" [src]="product.listImages[0]" [alt]="product.title">
+                <div class="w-44">
+                    <h3 class="font-semibold text-gray-900" >
+                        {{product.title}}
+                    </h3>
+                    <div class="text-lg font-medium text-gray-900">
+                        {{product.price | currency:'$ ':'symbol':'1.0'}}
+                    </div>
+                </div>
+                <button 
+                    (click)="eliminarItem(i)"
+                    type="button" 
+                    class="close-button flex items-center justify-center text-white bg-slate-500 hover:bg-slate-700 rounded-full w-4 h-4 focus:outline-none"
+                    >
+                        X
+                </button>            
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center py-2">
+            <p class="text-xl font-semibold">Total:</p>
+            <p class="text-xl font-semibold text-gray-900">
+              {{ total() | currency:'USD':'symbol':'1.2-2'}}
+            </p>
+        </div>
+    </div>
+</div>

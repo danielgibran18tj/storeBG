@@ -1,0 +1,29 @@
+<div class="login-container h-screen w-screen relative">
+  <div class="login-box absolute top-1/2 left-1/2 w-96 p-10">
+    <p>Login</p>
+    <form>
+      <div class="user-box">
+        <input required="" name="username" type="text" [(ngModel)]="logginRQ.username">
+        <label>Email</label>
+      </div>
+      <div class="user-box">
+        <input required="" name="password" type="password" [(ngModel)]="logginRQ.password">
+        <label>Password</label>
+      </div>
+
+      <a (click)="submitBtn()" style="cursor: pointer;">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Continue
+      </a>
+
+    </form>
+    <p>Don't have an account?
+      <a (click)="createNewUser()" class="a2" style="cursor: pointer;">
+        Sign up!
+      </a>
+    </p>
+  </div>
+</div>

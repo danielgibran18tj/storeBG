@@ -1,0 +1,27 @@
+
+    <div class="px-10">
+        <!-- 'text-lg' tamano de letra   -   'font-bold' estilo negrita -->
+        <h1 class="text-lg font-bold">About </h1>
+        <p class="text-sm">Lorem ipsum dolor <span highlight> sit amet consectetur adipisicing elit.</span> Sequi
+            eligendi tempore quisquam totam, dicta ea!
+            Mollitia vero, culpa ducimus sed quae et, deserunt eligendi iure a magnam, quia tenetur laudantium.</p>
+
+        <p class="text-sm">
+            Numero de clientes
+            <app-counter [duration]="duration()" [message]="message()" *ngIf="duration() > 0" />
+        </p>
+
+        <div>
+            <app-wave-audio audioUrl="assets/audio-drum-solo.mp3" />
+        </div>
+
+        
+        <hr><hr><hr>
+        <p>
+            <input type="number" [value]="duration()" (change)="changeDuration($event)">
+        </p>
+        <p>
+            <input type="text" [value]="message()" (change)="changeMessage($event)">
+        </p>
+
+    </div>

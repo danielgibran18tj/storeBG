@@ -7,10 +7,14 @@ import { Product } from '../models/product.model';
 export class CartService {
 
   cart = signal<Product[]>([]);
+  total = computed(() => {
+    const cart = this.cart();
+    return cart.reduce((total, product) => total + product.price , 0) ;
+  })
 
   constructor() { }
 
-  addToSelect(product: Product){
+  addToCart(product: Product){
     this.cart.update(state => [...state, product]);
   }
 
