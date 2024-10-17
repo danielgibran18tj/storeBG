@@ -1,0 +1,77 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+<div class="modal-container fixed top-1/2 left-1/2
+    transform -translate-x-1/2 -translate-y-1/2
+    w-96 h-auto bg-light shadow-lg z-50" style="border-radius: 5px;">
+    <div>
+        <div style="border-radius: 12px; " class="modal-header bg-blue-950 text-white p-3 -me-3 -ms-3">
+            <h2 class="modal-title">Datos del nuevo Usuario</h2>
+        </div>
+        <div class="modal-body p-3">
+            <form>
+
+                <div class="form-group mb-4">
+                    <label for="title">Nombre Producto</label>
+                    <input type="text" name="title" class="form-control" [(ngModel)]="productNew.title" required>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="descripcion">Descripcion</label>
+                    <input type="text" name="descripcion" class="form-control" [(ngModel)]="productNew.description">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="price">Valor</label>
+                    <input type="number" name="price" class="form-control" [(ngModel)]="productNew.price">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="category">N. Cateroria</label>
+                    <input type="number" name="category" class="form-control" [(ngModel)]="productNew.categoryId">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="stock">Stock</label>
+                    <input type="number" name="stock" class="form-control" [(ngModel)]="productNew.stock">
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="imagen">Imagen</label>
+                    <!-- Campo de entrada para la URL de la imagen -->
+                    <br>
+                    <input type="text" name="imagen" class="form-control"
+                        [(ngModel)]="imagePreview">
+                    <br>
+
+                    <div *ngIf="imagePreview">
+                        <button class="btn bg-orange-100 border-orange-500 text-orange-700
+                                hover:bg-orange-300" (click)="addImageFromUrl()">
+                                Agregar Imagen
+                        </button>
+                        <br><br>
+                    </div>
+
+
+                    <!-- Vista previa de la imagen -->
+                    <img [src]="imagePreview" alt="Vista previa de la imagen" *ngIf="imagePreview">
+                </div>
+                <div class="flex items-center justify-center mt-1">
+                    <div class="grid grid-cols-3 gap-1" >
+                      <img
+                        alt="ecommerce"
+                        *ngFor="let image of productNew.listImages"
+                        class="object-cover object-center rounded border-2 border-gray-200"
+                        (click)="changeCover(image)"
+                        [src]="image"
+                        [class.border-red-700]="image == imagePreview"
+                      />
+                    </div>
+                  </div>
+            </form>
+        </div>
+        <div class="modal-footer p-3">
+            <button class="btn btn-danger me-2" (click)="onClose()">Cancelar</button>
+            <button class="btn btn-success text-green-700" [mat-dialog-close]="productNew">Confirmar</button>
+        </div>
+
+    </div>
+</div>

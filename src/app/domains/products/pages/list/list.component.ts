@@ -10,6 +10,7 @@ import { Category } from '@shared/models/Category.model';
 import { Router, RouterLinkWithHref } from '@angular/router';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { AuthService } from '@shared/service/auth.service';
 
 
 
@@ -23,7 +24,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 export class ListComponent {
   img = 'https://picsum.photos/640/640?r=' + Math.random()
   rolActual = localStorage.getItem('authRol');
-  tokenActual = localStorage.getItem('authToken') ?? "";
+  tokenActual = this.authService.getToken() ?? "";
   products = signal<Product[]>([]);
   categories = signal<Category[]>([]);
   categorySeleccionada: number = 0;
@@ -37,6 +38,7 @@ export class ListComponent {
   @Input() category_id?: string;
 
   constructor(   
+    private authService: AuthService,
     private router: Router,
   ) {
     const initProducts: Product[] = []; 
@@ -88,8 +90,9 @@ export class ListComponent {
       },
       error: (error: HttpErrorResponse) => {
         console.log('algo no salio bien', error);
-        alert("Posiblemente alla caducado su sesion")
-        if (error.status === 401) {
+        if (error.status === 401 ) {
+          localStorage.clear();
+          console.log("entrando status 401");
           this.router.navigate(['/login'])
         }  
       }
@@ -101,7 +104,6 @@ export class ListComponent {
     this.categoryService.getAll(this.tokenActual).subscribe({
       next: (data) => {
         this.categories.set(data);
-        console.log(data);
       },
       error: () => {
         console.log('algo no salio bien');

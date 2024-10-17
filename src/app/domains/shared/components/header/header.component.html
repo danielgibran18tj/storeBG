@@ -1,6 +1,6 @@
 <nav>
     <!-- 'py-4' pading en eje y  -->
-    <div class="w-full flex flex-wrap items-center justify-between mx-auto py-4">
+    <div class="w-full flex items-center justify-between mx-auto py-4">
         <div class="flex items-center space-x-8">
             <a href="https://flowbite.com/" class="flex items-center ">
                 <img src="https://w7.pngwing.com/pngs/969/804/png-transparent-blue-and-red-autobots-logo-transformers-the-game-optimus-prime-bumblebee-autobot-transformer-emblem-logo-fictional-character.png" class="h-10 mr-3" alt="Flowbite Logo" />
@@ -14,7 +14,7 @@
                         [routerLinkActiveOptions]="{exact: true}"
                         class="block underline hover:underline"
                         aria-current="page">
-                            Home
+                            <strong>Home</strong> 
                     </a>
                 </li>
                 <li>
@@ -22,7 +22,7 @@
                         routerLink="/about"
                         routerLinkActive="underline"
                         class="block hover:underline">
-                            About
+                            <strong>About</strong> 
                     </a>
                 </li>
                 <li>
@@ -30,21 +30,22 @@
                         routerLink="/servicessss"
                         routerLinkActive="underline"
                         class="block hover:underline">
-                            Errors
+                        <strong>Errors</strong> 
                     </a>
                 </li>
                 <li *ngIf="rolActual == 'ADMINISTRADOR'">
                     <a
-                        routerLinkActive="underline"
+                        (click)="openModalCreateProduct()"
+                        style="cursor: pointer;"
                         class="block hover:underline">
-                            Ingresar nuevo Producto
+                        <strong>Ingresar nuevo Producto</strong> 
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="flex items-center">
-            <button class="relative" (click)="cerrarSession()">
-                Cerrar sesion
+        <div class="flex items-center ml-auto mr-10">
+            <button class="ml-4" (click)="cerrarSession()">
+                <strong>Cerrar sesion</strong>
             </button>
         </div>
         <div class="flex items-center">

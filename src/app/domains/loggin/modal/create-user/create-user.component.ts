@@ -15,6 +15,8 @@ import { Usuario } from '@shared/models/User.model';
 })
 export class CreateUserComponent {
 
+  selectedRole: string = '';
+
   constructor(
     // private sanitizer: DomSanitizer,
     public dialogRef: MatDialogRef<CreateUserComponent>,
@@ -25,4 +27,10 @@ export class CreateUserComponent {
     this.dialogRef.close();
   }
 
+  selectRol(){
+    this.dataNew.roleId = this.selectedRole;
+    console.log('user : ', this.dataNew);
+    
+    console.log('Rol seleccionado:', this.selectedRole);
+  }
 }
