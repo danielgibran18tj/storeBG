@@ -4,18 +4,21 @@ import { Injectable, inject } from '@angular/core';
 import { LogginRQ, LogginRS } from '@shared/models/Loggin.model';
 import { Usuario } from '@shared/models/User.model';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
+  private apiUrl = environment.apiUrl;  // Usar la URL de la API según el entorno
+
   private publicKey: string = '';
   private http = inject(HttpClient);
 
   constructor() { }
 
   createUser(user : Usuario){
-    return this.http.post('http://localhost:5024/api/createUser', user,
+    return this.http.post(`${this.apiUrl}/createUser`, user,
       {responseType: 'text' as 'json'}
     );
   }
@@ -30,7 +33,7 @@ export class LoginService {
     console.log("loginRequest: ", loginRequest)
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post<LogginRS>(
-      'http://localhost:5024/api/login',
+      `${this.apiUrl}/login`,
       JSON.stringify(loginRequest),
       { headers } // Agregar los encabezados a la solicitud
     );
@@ -39,7 +42,7 @@ export class LoginService {
 
   // Hacemos la petición HTTP para obtener la clave pública
   async getPublicKey(): Promise<void> {
-    return this.http.get<any>('http://localhost:5024/api/public-key').toPromise().then((data) => {
+    return this.http.get<any>(`${this.apiUrl}/public-key`).toPromise().then((data) => {
       const modulusBytes = forge.util.hexToBytes(data.modulus);
       console.log("Modulus byte length: ", modulusBytes.length); // Debería ser 256 bytes
       const { modulus, exponent } = data;
